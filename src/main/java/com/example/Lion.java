@@ -6,8 +6,11 @@ public class Lion {
 
     boolean hasMane;
     private final Predator predator;
+    private final KittensProvider kittensProvider;
+
     public Lion(String sex, Predator predator) throws Exception {
         this.predator = predator;
+        this.kittensProvider= new KittensProvider(predator);
         if ("Самец".equals(sex)) {
             hasMane = true;
         } else if ("Самка".equals(sex)) {
@@ -20,7 +23,7 @@ public class Lion {
 
 
     public int getKittens() {
-        return predator.getKittens();
+        return kittensProvider.getKittens();
     }
 
     public boolean doesHaveMane() {
@@ -29,5 +32,18 @@ public class Lion {
 
     public List<String> getFood() throws Exception {
         return predator.eatMeat();
+    }
+    private static class KittensProvider {
+        private final Predator predator;
+
+        public KittensProvider(Predator predator){
+            this.predator = predator;
+        }
+        public int getKittens(){
+            if (predator instanceof Feline){
+                return ((Feline) predator).getKittens();
+            }
+            return 0;
+        }
     }
 }

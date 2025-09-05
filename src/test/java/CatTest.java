@@ -28,14 +28,26 @@ public class CatTest {
         assertEquals("Мяу", cat.getSound());
     }
     @Test
-    public void testGetFood() throws Exception{
-        List<String> expectedFood = Arrays.asList("Мясо", "Рыба");
+    public void testGetFoodReturnsCorrectValue() throws Exception {
+        //для проверки возвращаемого значения
+        List<String> expectedFood = Arrays.asList("Животные", "Птицы", "Рыба");
         when(feline.eatMeat()).thenReturn(expectedFood);
 
         Cat cat = new Cat(feline);
         List<String> result = cat.getFood();
 
         assertEquals(expectedFood, result);
+    }
+
+    @Test
+    public void testGetFoodCallsEatMeat() throws Exception {
+        //для проверки вызова метода
+        List<String> expectedFood = Arrays.asList("Животные", "Птицы", "Рыба");
+        when(feline.eatMeat()).thenReturn(expectedFood);
+
+        Cat cat = new Cat(feline);
+        cat.getFood();
+
         verify(feline).eatMeat();
     }
     @Test
