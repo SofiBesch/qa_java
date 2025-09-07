@@ -1,10 +1,7 @@
 import com.example.Feline;
 import com.example.Lion;
-import com.example.Predator;
 import org.junit.Before;
 import org.junit.Test;
-
-import org.junit.runners.Parameterized;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -18,31 +15,23 @@ import static org.mockito.Mockito.*;
 
 public class LionTest {
     @Mock
-    private Predator predator;
-    private Feline felineMock;
+    private Feline feline;
+
 
 
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-        felineMock = mock(Feline.class);
-    }
-    @Parameterized.Parameters
-    public static Object[][] getTestData(){
-        return new Object[][]{
-                {"Самец", true, false},
-                {"Самка", false, false},
-                {"Неизвестный", false, true}
-        };
+
     }
 
 
     @Test
     public void testGetKittensReturnsCorrectValue() throws Exception {
         //для проверки возвращаемого значения
-        when(felineMock.getKittens()).thenReturn(1);
+        when(feline.getKittens()).thenReturn(1);
 
-        Lion lion = new Lion("Самец", felineMock);
+        Lion lion = new Lion("Самец", feline);
         int result = lion.getKittens();
 
         assertEquals(1, result);
@@ -51,20 +40,20 @@ public class LionTest {
     @Test
     public void testGetKittensCallsGetKittens() throws Exception {
         // для проверки вызова метода
-        when(felineMock.getKittens()).thenReturn(1);
+        when(feline.getKittens()).thenReturn(1);
 
-        Lion lion = new Lion("Самец", felineMock);
+        Lion lion = new Lion("Самец", feline);
         lion.getKittens();
 
-        verify(felineMock).getKittens();
+        verify(feline).getKittens();
     }
     @Test
     public void testGetFoodReturnsCorrectValue() throws Exception {
         //для проверки возвращаемого значения
         List<String> expectedFood = Arrays.asList("Животные", "Птицы", "Рыба");
-        when(predator.eatMeat()).thenReturn(expectedFood);
+        when(feline.eatMeat()).thenReturn(expectedFood);
 
-        Lion lion = new Lion("Самка", predator);
+        Lion lion = new Lion("Самка", feline);
         List<String> result = lion.getFood();
 
         assertEquals(expectedFood, result);
@@ -74,18 +63,17 @@ public class LionTest {
     public void testGetFoodCallsEatMeat() throws Exception {
         // для проверки вызова метода
         List<String> expectedFood = Arrays.asList("Животные", "Птицы", "Рыба");
-        when(predator.eatMeat()).thenReturn(expectedFood);
+        when(feline.eatMeat()).thenReturn(expectedFood);
 
-        Lion lion = new Lion("Самка", predator);
+        Lion lion = new Lion("Самка", feline);
         lion.getFood();
 
-        verify(predator).eatMeat();
+        verify(feline).eatMeat();
     }
     @Test
-    public void testGetFoodException() throws Exception {
-
-        when(predator.eatMeat()).thenThrow(new Exception("Ошибка получения еды"));
-        Lion lion = new Lion("Самец", predator);
+    public void testGetFoodExceptionMessage() throws Exception {
+        when(feline.eatMeat()).thenThrow(new Exception("Ошибка получения еды"));
+        Lion lion = new Lion("Самец", feline);
 
         try {
             lion.getFood();
@@ -93,12 +81,24 @@ public class LionTest {
         } catch (Exception e){
             assertEquals("Ошибка получения еды", e.getMessage());
         }
-        verify(predator).eatMeat();
+    }
 
+
+    @Test
+    public void testGetFoodExceptionCallsEatMeat() throws Exception {
+        when(feline.eatMeat()).thenThrow(new Exception("Ошибка получения еды"));
+        Lion lion = new Lion("Самец", feline);
+
+        try {
+            lion.getFood();
+        } catch (Exception e){
+            // проверяем только вызов метода
+        }
+        verify(feline).eatMeat();
     }
     @Test
     public void testGetKittensWhenNotFeline() throws Exception {
-        Lion lion = new Lion("Самец", predator);
+        Lion lion = new Lion("Самец", feline);
         int result = lion.getKittens();
         assertEquals(0, result);
     }

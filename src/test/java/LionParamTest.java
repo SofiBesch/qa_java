@@ -1,6 +1,6 @@
 
+import com.example.Feline;
 import com.example.Lion;
-import com.example.Predator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Parameterized.class)
 public class LionParamTest {
     @Mock
-    private Predator predator;
+    private Feline feline;
     private final String sex;
     private final boolean expectedHasMane;
     private final boolean expectedException;
@@ -47,13 +47,13 @@ public class LionParamTest {
 
         if (expectedException) {
             try {
-                new Lion(sex, predator);
+                new Lion(sex, feline);
                 assertTrue("Должно быть исключение", false);
             } catch (Exception e) {
                 assertEquals("Используйте допустимые значения пола животного - самец или самка", e.getMessage());
             }
         }else{
-            Lion lion = new Lion(sex, predator);
+            Lion lion = new Lion(sex, feline);
             assertEquals(expectedHasMane, lion.doesHaveMane());
         }
     }

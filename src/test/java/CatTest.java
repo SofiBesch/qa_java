@@ -51,7 +51,7 @@ public class CatTest {
         verify(feline).eatMeat();
     }
     @Test
-    public void testGetFoodExсeption() throws Exception {
+    public void testGetFoodExceptionMessage() throws Exception {
         when(feline.eatMeat()).thenThrow(new Exception("Ошибка питания"));
 
         Cat cat =new Cat(feline);
@@ -60,6 +60,19 @@ public class CatTest {
             assertTrue("Должно было появится исключение", false);
         } catch (Exception e) {
             assertEquals("Ошибка питания", e.getMessage());
+        }
+    }
+
+
+    @Test
+    public void testGetFoodExceptionCallsEatMeat() throws Exception {
+        when(feline.eatMeat()).thenThrow(new Exception("Ошибка питания"));
+
+        Cat cat =new Cat(feline);
+        try {
+            cat.getFood();
+        } catch (Exception e) {
+            // проверяем только вызов метода
         }
         verify(feline).eatMeat();
     }
